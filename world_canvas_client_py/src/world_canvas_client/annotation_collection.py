@@ -550,6 +550,15 @@ class AnnotationCollection:
     def is_saved(self):
         return self._saved
 
+    def clear(self): 
+        reset_data_srv = self._get_service_handle('reset_database', world_canvas_msgs.srv.ResetDatabase) 
+        rospy.loginfo("Requesting server to reset") 
+        response = reset_data_srv() 
+        if not response.result: 
+            message = "Server reported an error: %s" % response.message 
+            rospy.logerr(message) 
+            raise WCFError(message) 
+
     def get_world_list(self):
         '''
         TODO: temporally here until we create a WorldCollection class, as on C++ library.
